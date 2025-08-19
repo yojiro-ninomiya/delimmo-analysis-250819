@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEL'IMMO 麻布台ヒルズ店 インバウンド向けアンケート詳細分析</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Meiryo', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 50px;
+            font-size: 24px;
+        }
+        h3 {
+            color: #3498db;
+            font-size: 20px;
+            margin-top: 30px;
+        }
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .summary h2 {
+            color: white;
+            border-bottom-color: rgba(255,255,255,0.3);
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .metric-card {
+            background-color: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .metric-value {
+            font-size: 40px;
+            font-weight: bold;
+            display: block;
+        }
+        .metric-label {
+            font-size: 14px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .chart-container.large {
+            grid-column: span 2;
+            height: 450px;
+        }
+        .chart-container.small {
+            height: 350px;
+        }
+        .insight {
+            background-color: #e8f6ff;
+            padding: 20px;
+            border-left: 5px solid #3498db;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .country-analysis {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .percentage {
+            color: #3498db;
+            font-weight: bold;
+        }
+        .recommendation-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+        }
+        .recommendation-box h3 {
+            color: white;
+            margin-top: 20px;
+        }
+        .recommendation-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .recommendation-box li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        .recommendation-box li:last-child {
+            border-bottom: none;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 2px;
+        }
+        .tag.green {
+            background-color: #2ecc71;
+        }
+        .tag.orange {
+            background-color: #f39c12;
+        }
+        .tag.purple {
+            background-color: #9b59b6;
+        }
+    </style>
+</head>
+<body>
+    <h1>DEL'IMMO 麻布台ヒルズ店<br>インバウンド向けアンケート詳細分析レポート</h1>
+    
+    <div class="summary">
+        <h2>エグゼクティブサマリー</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <span class="metric-value">406</span>
+                <span class="metric-label">外国人回答者数</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">40+</span>
+                <span class="metric-label">国籍数</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">73%</span>
+                <span class="metric-label">SNS共有意向率</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">4.3/5.0</span>
+                <span class="metric-label">平均総合評価</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">71%</span>
+                <span class="metric-label">teamLab来訪者</span>
+            </div>
+        </div>
+        <div style="margin-top: 20px;">
+            <strong>主要な発見：</strong>
+            <ul style="list-style: none; padding-left: 0;">
+                <li>✓ 来店客の71%がteamLab Borderless訪問者で、観光スポットとの相乗効果が明確</li>
+                <li>✓ Instagram（50%）とGoogle Maps（49%）が主要な情報源として機能</li>
+                <li>✓ 女性客が59.4%を占め、特に視覚的な魅力（ディスプレイ・内装）に反応</li>
+                <li>✓ 52.5%が初めての日本訪問者で、新規顧客開拓の余地が大きい</li>
+                <li>✓ Light meal（45.8%）が最も人気で、カフェ利用が主流</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>1. 顧客プロファイル分析</h2>
+    
+    <div class="chart-grid">
+        <div class="chart-container">
+            <canvas id="ageChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="genderChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="visitFrequencyChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="travelTypeChart"></canvas>
+        </div>
+    </div>
+
+    <div class="insight">
+        <strong>顧客プロファイルの特徴：</strong>
+        <ul>
+            <li>年齢層は18-25歳（22.4%）と40-50歳（18.5%）の二極化傾向</li>
+            <li>女性客が約6割を占め、特にSNS共有に積極的</li>
+            <li>52.5%が初訪日で、日本体験の入口として機能</li>
+            <li>57.4%が家族連れで、ファミリー層への訴求が重要</li>
+        </ul>
+    </div>
+
+    <h2>2. 国籍別詳細分析</h2>
+    
+    <div class="chart-container large">
+        <canvas id="countryDetailChart"></canvas>
+    </div>
+
+    <div class="country-analysis">
+        <h3>🇺🇸 アメリカ（102人 - 25.1%）</h3>
+        <table>
+            <tr>
+                <th width="30%">特徴</th>
+                <td>
+                    <span class="tag">Instagram重視</span>
+                    <span class="tag green">初訪日率高</span>
+                    <span class="tag orange">家族旅行多数</span>
+                </td>
+            </tr>
+            <tr>
+                <th>主要メディア</th>
+                <td>Instagram (68%), Google Maps (65%), YouTube (45%)</td>
+            </tr>
+            <tr>
+                <th>平均評価</th>
+                <td>4.4/5.0（特に雰囲気を高評価）</td>
+            </tr>
+            <tr>
+                <th>人気商品</th>
+                <td>Light meal (52%), Coffee (38%), Parfait (25%)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="country-analysis">
+        <h3>🇨🇳 中国（55人 - 13.5%）</h3>
+        <table>
+            <tr>
+                <th width="30%">特徴</th>
+                <td>
+                    <span class="tag purple">Rednote/小紅書</span>
+                    <span class="tag">口コミ重視</span>
+                    <span class="tag green">リピーター多い</span>
+                </td>
+            </tr>
+            <tr>
+                <th>主要メディア</th>
+                <td>Rednote (72%), Weibo (45%), 口コミ (38%)</td>
+            </tr>
+            <tr>
+                <th>平均評価</th>
+                <td>4.2/5.0（価格に敏感な傾向）</td>
+            </tr>
+            <tr>
+                <th>人気商品</th>
+                <td>Parfait (45%), Tea (32%), Cake (28%)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="country-analysis">
+        <h3>🇦🇺 オーストラリア（39人 - 9.6%）</h3>
+        <table>
+            <tr>
+                <th width="30%">特徴</th>
+                <td>
+                    <span class="tag">計画的</span>
+                    <span class="tag green">Google依存</span>
+                    <span class="tag orange">カップル旅行</span>
+                </td>
+            </tr>
+            <tr>
+                <th>主要メディア</th>
+                <td>Google Maps (75%), Travel blogs (48%), TripAdvisor (35%)</td>
+            </tr>
+            <tr>
+                <th>平均評価</th>
+                <td>4.5/5.0（サービスを特に評価）</td>
+            </tr>
+            <tr>
+                <th>人気商品</th>
+                <td>Coffee (58%), Light meal (42%), Cake (20%)</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2>3. メディア利用と情報源分析</h2>
+    
+    <div class="chart-grid">
+        <div class="chart-container large">
+            <canvas id="mediaUsageChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="discoveryMethodChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="recommendationSourceChart"></canvas>
+        </div>
+    </div>
+
+    <h2>4. 来店動機と体験評価</h2>
+    
+    <div class="chart-grid">
+        <div class="chart-container">
+            <canvas id="visitPurposeChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="attractionChart"></canvas>
+        </div>
+        <div class="chart-container large">
+            <canvas id="detailedRatingChart"></canvas>
+        </div>
+    </div>
+
+    <h2>5. 商品分析と価格認識</h2>
+    
+    <div class="chart-grid">
+        <div class="chart-container">
+            <canvas id="productOrderChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="pricePerceptionChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="comparisonChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="priorKnowledgeChart"></canvas>
+        </div>
+    </div>
+
+    <h2>6. SNS共有行動分析</h2>
+    
+    <div class="chart-grid">
+        <div class="chart-container">
+            <canvas id="sharingStatusChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="sharingChannelChart"></canvas>
+        </div>
+    </div>
+
+    <div class="insight">
+        <strong>SNS共有の特徴：</strong>
+        <ul>
+            <li>73%が共有に前向き（既に投稿28% + 後で投稿予定45%）</li>
+            <li>Instagram Stories（154人）が最も人気の共有チャンネル</li>
+            <li>Google Reviews（80人）への投稿も多く、SEO効果が期待できる</li>
+            <li>国別では中国人観光客のWeChat/Rednote共有率が特に高い</li>
+        </ul>
+    </div>
+
+    <h2>7. 改善提案の分析</h2>
+    
+    <div class="country-analysis">
+        <h3>改善要望カテゴリー別集計（315件の有効回答から分析）</h3>
+        <div class="insight" style="margin-bottom: 20px;">
+            <strong>回答状況：</strong>406名中315名（77.6%）が具体的な改善提案を提供
+        </div>
+        <table>
+            <tr>
+                <th width="25%">カテゴリー</th>
+                <th width="15%">件数（割合）</th>
+                <th>代表的な意見</th>
+            </tr>
+            <tr>
+                <td><strong>メニュー・商品の多様性</strong></td>
+                <td><span class="percentage">105件（33.3%）</span></td>
+                <td>「もっと多様な選択肢」「ベジタリアンオプションがない」<br>「デカフェコーヒーの提供」「朝食メニューの充実」<br>「15時以降もケーキ全種類を提供してほしい」</td>
+            </tr>
+            <tr>
+                <td><strong>座席・待ち時間</strong></td>
+                <td><span class="percentage">23件（7.3%）</span></td>
+                <td>「待ち時間が長すぎる」「待機用の列がない」<br>「予約システムの導入」「もっと広いスペース」</td>
+            </tr>
+            <tr>
+                <td><strong>価格・バリュー</strong></td>
+                <td><span class="percentage">17件（5.4%）</span></td>
+                <td>「価格を下げてほしい」「セットメニューの提供」<br>「学生割引」「コストパフォーマンスの改善」</td>
+            </tr>
+            <tr>
+                <td><strong>ポーション・サイズ</strong></td>
+                <td><span class="percentage">16件（5.1%）</span></td>
+                <td>「一人一品注文は多すぎる」「シェアできるサイズ」<br>「小さいポーションのオプション」「ハーフサイズメニュー」</td>
+            </tr>
+            <tr>
+                <td><strong>サービス・言語対応</strong></td>
+                <td><span class="percentage">16件（5.1%）</span></td>
+                <td>「英語対応の充実」「注文システムの改善」<br>「現金払いのオプション」「メニューの英語説明」</td>
+            </tr>
+            <tr>
+                <td><strong>建物内導線・視認性</strong></td>
+                <td><span class="percentage">9件（2.9%）</span></td>
+                <td>「Google Mapsでの位置を明確に」「外から店内が見えない」<br>「Garden BとMarket buildingが紛らわしい」<br>「何の専門店か入口から分からない」</td>
+            </tr>
+            <tr>
+                <td><strong>その他・満足</strong></td>
+                <td><span class="percentage">127件（40.3%）</span></td>
+                <td>多くが「All good」「Perfect」などの肯定的コメント<br>その他「開店時間を早く」「WiFiの提供」「子供向け対応」など</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="insight">
+        <strong>改善提案から見える重要なインサイト：</strong>
+        <ul>
+            <li><strong>最大の要望はメニューの多様性（33.3%）：</strong>特にベジタリアン・ビーガン対応、デカフェ、時間帯別メニューの充実が求められている</li>
+            <li><strong>建物内導線の問題は全体の2.9%：</strong>件数は少ないが、来店機会を逃している可能性があり影響は大きい</li>
+            <li><strong>40.3%が「特に問題なし」：</strong>満足度の高さを示す一方、具体的な改善点を見つけにくい状況</li>
+            <li><strong>オペレーション課題：</strong>待ち時間、一人一品ルール、サイズ選択など、運営面での柔軟性が求められている</li>
+        </ul>
+    </div>
+
+    <div class="recommendation-box">
+        <h2 style="color: white; border-bottom-color: rgba(255,255,255,0.3);">戦略的提言</h2>
+        
+        <h3>1. 即効性の高い施策（1-3ヶ月）</h3>
+        <ul>
+            <li><strong>メニューの多様性向上：</strong>
+                <br>- ベジタリアン・ビーガンメニューの導入（最優先）
+                <br>- デカフェコーヒーの提供開始
+                <br>- 15時以降も全ケーキメニューを提供
+                <br>- 朝食メニューの充実</li>
+            <li><strong>オペレーション改善：</strong>
+                <br>- 一人一品ルールの見直し（シェア可能に）
+                <br>- ハーフサイズ・ミニサイズの導入
+                <br>- 待機列の整備と待ち時間表示</li>
+            <li><strong>建物内導線の改善：</strong>
+                <br>- 「DEL'IMMO @ Garden B」の明確な表示
+                <br>- 外から店内が見える工夫（照明・ガラス面の活用）
+                <br>- Google My Businessの住所を正確に更新</li>
+        </ul>
+
+        <h3>2. 中期的施策（3-6ヶ月）</h3>
+        <ul>
+            <li><strong>国別マーケティング：</strong>
+                <br>- アメリカ：Instagramインフルエンサーとのコラボ
+                <br>- 中国：Rednote公式アカウント開設、KOL（Key Opinion Leader）活用
+                <br>- オーストラリア：旅行ブログへの露出強化</li>
+            <li><strong>商品開発：</strong>ベジタリアン/ビーガンオプション、季節限定パフェ、インスタ映えドリンク</li>
+            <li><strong>価格戦略：</strong>ランチセット導入、グループ割引、学生割引</li>
+        </ul>
+
+        <h3>3. 長期的施策（6ヶ月以上）</h3>
+        <ul>
+            <li><strong>ブランド認知度向上：</strong>海外旅行サイトでの広告、空港でのプロモーション</li>
+            <li><strong>デジタルエコシステム構築：</strong>専用アプリ開発、ロイヤリティプログラム</li>
+            <li><strong>店舗拡張：</strong>座席数増加、屋外テラス設置、充電設備完備</li>
+            <li><strong>パートナーシップ：</strong>周辺ホテル、旅行代理店との提携強化</li>
+        </ul>
+    </div>
+
+    <script>
+        // カラーパレット
+        const colors = {
+            primary: '#3498db',
+            secondary: '#2ecc71',
+            tertiary: '#e74c3c',
+            quaternary: '#f39c12',
+            quinary: '#9b59b6',
+            senary: '#1abc9c',
+            gradient1: ['#667eea', '#764ba2'],
+            gradient2: ['#f093fb', '#f5576c'],
+            gradient3: ['#4facfe', '#00f2fe']
+        };
+
+        // 1. 年齢分布
+        const ageCtx = document.getElementById('ageChart').getContext('2d');
+        new Chart(ageCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['18-25歳', '25-30歳', '30-40歳', '40-50歳', '50-60歳', '60歳以上', '18歳未満'],
+                datasets: [{
+                    data: [91, 46, 68, 75, 56, 17, 53],
+                    backgroundColor: [
+                        colors.primary, colors.secondary, colors.tertiary, 
+                        colors.quaternary, colors.quinary, colors.senary, '#95a5a6'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '年齢層分布',
+                        font: { size: 18 }
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // 2. 性別分布
+        const genderCtx = document.getElementById('genderChart').getContext('2d');
+        new Chart(genderCtx, {
+            type: 'pie',
+            data: {
+                labels: ['女性', '男性', '回答しない'],
+                datasets: [{
+                    data: [241, 155, 10],
+                    backgroundColor: ['#ff6b6b', '#4ecdc4', '#95a5a6']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '性別分布',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 3. 日本訪問回数
+        const visitCtx = document.getElementById('visitFrequencyChart').getContext('2d');
+        new Chart(visitCtx, {
+            type: 'bar',
+            data: {
+                labels: ['初回', '2-3回', '4回以上'],
+                datasets: [{
+                    label: '訪問者数',
+                    data: [213, 77, 116],
+                    backgroundColor: colors.secondary
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '日本訪問回数',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 4. 旅行形態
+        const travelCtx = document.getElementById('travelTypeChart').getContext('2d');
+        new Chart(travelCtx, {
+            type: 'polarArea',
+            data: {
+                labels: ['家族', '友人', 'パートナー', '一人'],
+                datasets: [{
+                    data: [233, 79, 69, 25],
+                    backgroundColor: [colors.primary, colors.secondary, colors.tertiary, colors.quaternary]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '旅行形態',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 5. 国籍詳細
+        const countryDetailCtx = document.getElementById('countryDetailChart').getContext('2d');
+        new Chart(countryDetailCtx, {
+            type: 'bar',
+            data: {
+                labels: ['USA', 'China', 'Australia', 'Taiwan', 'UK', 'Hong Kong', 'South Korea', 'France', 'Canada', 'Germany', 'Sweden', 'Philippines', 'Belgium', 'Spain', 'Turkey'],
+                datasets: [{
+                    label: '回答者数',
+                    data: [102, 55, 39, 19, 18, 17, 15, 15, 11, 9, 7, 6, 6, 5, 5],
+                    backgroundColor: colors.primary,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '国籍別回答者数（上位15か国）',
+                        font: { size: 18 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 6. メディア利用
+        const mediaCtx = document.getElementById('mediaUsageChart').getContext('2d');
+        new Chart(mediaCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Instagram', 'Google Maps', 'YouTube', 'TikTok', 'Japan travel sites', 'Travel blogs', 'Tabelog', 'TripAdvisor', 'Guidebooks', 'X/Twitter'],
+                datasets: [{
+                    label: '利用者数',
+                    data: [204, 201, 125, 97, 75, 50, 46, 42, 42, 32],
+                    backgroundColor: colors.secondary,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '旅行計画に使用したメディア（上位10）',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 7. 発見方法
+        const discoveryCtx = document.getElementById('discoveryMethodChart').getContext('2d');
+        new Chart(discoveryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['通りすがり', 'Google Maps', 'Instagram', '友人の推薦', 'Rednote', 'その他'],
+                datasets: [{
+                    data: [145, 78, 52, 45, 38, 48],
+                    backgroundColor: [colors.primary, colors.secondary, colors.tertiary, colors.quaternary, colors.quinary, '#95a5a6']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'DEL\'IMMOを知った経緯',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 8. 推薦情報源
+        const recommendCtx = document.getElementById('recommendationSourceChart').getContext('2d');
+        new Chart(recommendCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Social Media', 'Google', 'Friends', 'Travel Apps', 'Hotel Staff', 'Guidebooks'],
+                datasets: [{
+                    label: '利用頻度',
+                    data: [245, 201, 156, 98, 67, 42],
+                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                    borderColor: colors.primary,
+                    pointBackgroundColor: colors.primary
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'カフェ・レストラン情報の入手先',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 9. 訪問目的
+        const visitPurposeCtx = document.getElementById('visitPurposeChart').getContext('2d');
+        new Chart(visitPurposeCtx, {
+            type: 'pie',
+            data: {
+                labels: ['teamLab Borderless', '周辺散策', 'ショッピング', 'ダイニング', 'ビジネス'],
+                datasets: [{
+                    data: [288, 50, 33, 29, 6],
+                    backgroundColor: [colors.primary, colors.secondary, colors.tertiary, colors.quaternary, colors.quinary]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '麻布台ヒルズ訪問目的',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 10. 来店動機
+        const attractionCtx = document.getElementById('attractionChart').getContext('2d');
+        new Chart(attractionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['パティスリーディスプレイ', '内装・雰囲気', '混雑していない', 'コーヒー/休憩', '建物の外観', '価格'],
+                datasets: [{
+                    label: '選択回数',
+                    data: [285, 243, 156, 142, 98, 45],
+                    backgroundColor: colors.tertiary,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '来店のきっかけ（複数選択可）',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 11. 詳細評価
+        const detailedRatingCtx = document.getElementById('detailedRatingChart').getContext('2d');
+        new Chart(detailedRatingCtx, {
+            type: 'line',
+            data: {
+                labels: ['味', 'プレゼンテーション', 'サービス', '雰囲気', 'コストパフォーマンス'],
+                datasets: [
+                    {
+                        label: '全体平均',
+                        data: [4.2, 4.5, 4.3, 4.6, 3.8],
+                        borderColor: colors.primary,
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'アメリカ',
+                        data: [4.3, 4.6, 4.4, 4.7, 3.9],
+                        borderColor: colors.secondary,
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: '中国',
+                        data: [4.1, 4.4, 4.2, 4.5, 3.6],
+                        borderColor: colors.tertiary,
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '体験評価スコア比較（5点満点）',
+                        font: { size: 18 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5
+                    }
+                }
+            }
+        });
+
+        // 12. 商品注文
+        const productCtx = document.getElementById('productOrderChart').getContext('2d');
+        new Chart(productCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Light meal', 'Parfait', 'Coffee', 'Cake', 'Tea', 'Shaved ice', 'Pasta', 'Sandwich'],
+                datasets: [{
+                    label: '注文数',
+                    data: [186, 109, 102, 68, 62, 8, 6, 5],
+                    backgroundColor: colors.quaternary,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '注文商品ランキング',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 13. 価格認識
+        const priceCtx = document.getElementById('pricePerceptionChart').getContext('2d');
+        new Chart(priceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['適正価格', '少し高い', '高い', 'お得', '非常に高い'],
+                datasets: [{
+                    data: [165, 142, 68, 23, 8],
+                    backgroundColor: [colors.secondary, colors.quaternary, colors.tertiary, colors.primary, '#e74c3c']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '価格に対する認識',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 14. 自国との比較
+        const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+        new Chart(comparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Much better', 'Better', 'About the same', 'Worse'],
+                datasets: [{
+                    label: '回答数',
+                    data: [198, 156, 45, 7],
+                    backgroundColor: colors.senary
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '自国のカフェとの比較',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 15. 事前認知
+        const priorKnowledgeCtx = document.getElementById('priorKnowledgeChart').getContext('2d');
+        new Chart(priorKnowledgeCtx, {
+            type: 'pie',
+            data: {
+                labels: ['初めて見た', 'SNSで見た', '友人から聞いた', 'ウェブサイトで見た'],
+                datasets: [{
+                    data: [287, 68, 32, 19],
+                    backgroundColor: [colors.primary, colors.secondary, colors.tertiary, colors.quaternary]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'DEL\'IMMO事前認知状況',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 16. SNS共有状況
+        const sharingStatusCtx = document.getElementById('sharingStatusChart').getContext('2d');
+        new Chart(sharingStatusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['後で投稿予定', '既に投稿した', '投稿しない', '未定'],
+                datasets: [{
+                    data: [183, 114, 89, 20],
+                    backgroundColor: [colors.secondary, colors.primary, colors.tertiary, '#95a5a6']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'SNS共有意向',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+
+        // 17. 共有チャンネル
+        const sharingChannelCtx = document.getElementById('sharingChannelChart').getContext('2d');
+        new Chart(sharingChannelCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Instagram Stories', 'Google Reviews', 'Instagram Posts', 'TikTok', 'TripAdvisor', 'Facebook', 'WeChat', 'その他'],
+                datasets: [{
+                    label: '利用者数',
+                    data: [154, 80, 57, 35, 21, 10, 4, 20],
+                    backgroundColor: colors.quinary,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'SNS共有チャンネル',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
